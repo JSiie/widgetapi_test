@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class WidgetManager {
@@ -56,6 +57,18 @@ public class WidgetManager {
             return null;
         }
         return new ArrayList<Widget>(this.widgetList.values());
+    }
+    
+    public List<Widget> getWidgetPartial(int limit, Optional<Integer> offset){
+        if(this.widgetList.size() == 0) {
+            return null;
+        }
+        List<Widget> tmp = new ArrayList<Widget>(this.widgetList.values());
+        if(offset.isPresent() && offset.get() >= this.widgetList.size())
+            return null;
+        if(offset.isPresent())
+            return tmp.subList(Math.max(0, offset.get()), Math.min(Math.max(offset.get(), 0) + limit, this.widgetList.size()));
+        return tmp.subList(0, Math.min(limit, this.widgetList.size()));
     }
       
     private void moveZIndex(int zindex) {

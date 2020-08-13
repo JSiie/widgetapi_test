@@ -2,6 +2,7 @@ package com.widget.apitest;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,8 +40,13 @@ public class APIController {
      }
 	 
 	 @GetMapping(path="/widget")
-     public List<Widget> getWidgetAll() {
-         List<Widget> result = widgetmanager.getWidgetAll();
+     public List<Widget> getWidgetAll(@RequestParam Optional<Integer> limit,  @RequestParam Optional<Integer> offset) {
+	     int realLimit = 10;
+	     if(limit.isPresent() && limit.get() <= 500 && limit.get() > 0)
+	         realLimit = limit.get();
+	     if(limit.isPresent() && limit.get() > 500)
+	         realLimit = 500;
+         List<Widget> result = widgetmanager.getWidgetPartial(realLimit, offset);
          return result; 
      }
 	 

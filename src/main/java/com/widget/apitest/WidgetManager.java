@@ -62,7 +62,9 @@ public class WidgetManager {
         if (this.widgetList.get(zindex) != null) {
             //then we have to change the object and see if there is a cascade of changes to do
             Widget changedwidget = this.widgetList.remove(zindex);
-            changedwidget.setZIndex(zindex + 1);
+            HashMap<String, Integer> args = new HashMap<String, Integer>();
+            args.put("zindex", zindex + 1);
+            changedwidget.set(args);
             this.moveZIndex(zindex + 1);
             this.widgetList.put(zindex + 1, changedwidget);
         }
@@ -95,23 +97,14 @@ public class WidgetManager {
     
     public Widget changeWidget(String id, HashMap<String, Integer> args) {
         Widget changedwidget = this.getWidgetbyID(id);
-        if(args.containsKey("x")) {
-            changedwidget.setX(args.get("x"));
-        }
-        if(args.containsKey("y")) {
-            changedwidget.setY(args.get("y"));
-        }
-        if(args.containsKey("width")) {
-            changedwidget.setWidth(args.get("width"));
-        }
-        if(args.containsKey("height")) {
-            changedwidget.setHeight(args.get("height"));
-        }
         if(args.containsKey("zindex")) {
             this.widgetList.remove(changedwidget.getZIndex());
             this.moveZIndex(args.get("zindex"));
-            changedwidget.setZIndex(args.get("zindex"));
+            changedwidget.set(args);;
             this.widgetList.put(args.get("zindex"), changedwidget);
+        }
+        else {
+            changedwidget.set(args);
         }
         return changedwidget;
     }

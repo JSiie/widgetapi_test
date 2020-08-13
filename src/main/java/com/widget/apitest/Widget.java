@@ -1,5 +1,6 @@
 package com.widget.apitest;
 
+import java.util.Map;
 import java.util.UUID;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -27,34 +28,51 @@ public class Widget {
         this.zindex = zindex;
         this.lastModified = Instant.now();
     }
-    
-    public void setID(String id) {
-        this.lastModified = Instant.now();
-    }
-    
-    public void setX(int x) {
+       
+    private void setX(int x) {
         this.x = x;
         this.lastModified = Instant.now();
     }
     
-    public void setY(int y) {
+    private void setY(int y) {
         this.y = y;
         this.lastModified = Instant.now();
     }
     
-    public void setWidth(int width) {
+    private void setWidth(int width) {
         this.width = width;
         this.lastModified = Instant.now();
     }
     
-    public void setHeight(int height) {
+    private void setHeight(int height) {
         this.height = height;
         this.lastModified = Instant.now();
     }
     
-    public void setZIndex(int zindex) {
+    private void setZIndex(int zindex) {
         this.zindex = zindex;
         this.lastModified = Instant.now();
+    }
+    
+    public void set(Map<String, Integer> args) {
+        synchronized(this) {
+            if(args.containsKey("x")) {
+                this.setX(args.get("x"));
+            }
+            if(args.containsKey("y")) {
+                this.setY(args.get("y"));
+            }
+            if(args.containsKey("width")) {
+                this.setWidth(args.get("width"));
+            }
+            if(args.containsKey("height")) {
+                this.setHeight(args.get("height"));
+            }
+            if(args.containsKey("zindex")) {
+                this.setZIndex(args.get("zindex"));
+            }
+        }
+        return;
     }
     
     public UUID getId() {
@@ -62,23 +80,33 @@ public class Widget {
     }
     
     public int getX() {
-        return this.x;
+        synchronized(this) {
+            return this.x;
+        }
     }
     
     public int getY() {
-        return this.y;
+        synchronized(this) {
+            return this.y;
+        }
     }
     
     public int getWidth() {
-        return this.width;
+        synchronized(this) {
+            return this.width;
+        }
     }
     
     public int getHeight() {
-        return this.height;
+        synchronized(this) {
+            return this.height;
+        }
     }
     
     public int getZIndex() {
-        return this.zindex;
+        synchronized(this) {
+            return this.zindex;
+        }
     }
     
     public ZonedDateTime getLastModified() {

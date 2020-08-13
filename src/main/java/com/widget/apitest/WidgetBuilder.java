@@ -1,5 +1,6 @@
 package com.widget.apitest;
 
+import java.util.HashMap;
 
 public class WidgetBuilder {
     
@@ -31,12 +32,14 @@ public class WidgetBuilder {
     }
     
     Widget build(){
+        HashMap<String, Integer> args = new HashMap<String, Integer>();
+        args.put("x", this.x);
+        args.put("y", this.y);
+        args.put("width", this.width);
+        args.put("height", this.height);
+        args.put("zindex", this.zindex);
         Widget widget = new Widget();
-        widget.setX(this.x);
-        widget.setY(this.y);
-        widget.setWidth(this.width);
-        widget.setHeight(this.height);
-        widget.setZIndex(this.zindex);
+        widget.set(args);
         return widget;
     }
 

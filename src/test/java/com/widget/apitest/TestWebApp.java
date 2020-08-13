@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +33,7 @@ public class TestWebApp {
     private APIController controller;
 
     @Test
-    public void contexLoads() throws Exception {
+    public void contextLoads() throws Exception {
         assertThat(controller).isNotNull();
     }
     
@@ -132,7 +133,7 @@ public class TestWebApp {
         
         String id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
         
-        this.mockMvc.perform(put("/widget")
+        this.mockMvc.perform(put("/widget/"+id)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{\"x\":30,\"zindex\":1}}")
                             )
@@ -146,20 +147,40 @@ public class TestWebApp {
                 .andExpect(jsonPath("$.height").value(250))
                 .andExpect(jsonPath("$.zindex").value(1))
                 ;
-        
-        this.mockMvc.perform(get("/widget")
+    }
+    
+    @Test
+    public void DeleteWidget()
+      throws Exception {   
+        MvcResult result = this.mockMvc.perform(post("/widget")
                             .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"x\":10,\"y\":10,\"width\":200,\"height\":250,\"zindex\":-1}}")
                             )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$[0].id").value(id))
-                .andExpect(jsonPath("$[0].x").value(30))
-                .andExpect(jsonPath("$[0].y").value(10))
-                .andExpect(jsonPath("$[0].width").value(200))
-                .andExpect(jsonPath("$[0].height").value(250))
-                .andExpect(jsonPath("$[0].zindex").value(1))
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.x").value(10))
+                .andExpect(jsonPath("$.y").value(10))
+                .andExpect(jsonPath("$.width").value(200))
+                .andExpect(jsonPath("$.height").value(250))
+                .andExpect(jsonPath("$.zindex").value(-1))
+                .andReturn()
                 ;
+        
+        String id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        
+        this.mockMvc.perform(delete("/widget/"+id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            )
+                .andDo(print())
+                .andExpect(status().isOk())
+                ;
+        
+        this.mockMvc.perform(get("/widget/"+id)
+                            .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
-
+    
 }

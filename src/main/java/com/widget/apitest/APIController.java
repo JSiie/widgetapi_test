@@ -23,7 +23,7 @@ public class APIController {
 	
 	 @GetMapping(path="/")
 	 public String HomePage() {
-	  return "Hello!! from a widget API";
+	  return "Hello! from a widget API";
 	 }
 	 
 	 @GetMapping(path="/widget/{id}")

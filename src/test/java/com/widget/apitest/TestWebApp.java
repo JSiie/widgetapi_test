@@ -42,16 +42,32 @@ public class TestWebApp {
     }
     
     @Test
-    public void createWidget()
+    public void createWidgetFailure()
       throws Exception {
-        
-        Widget widget_control = new Widget(1, 1, 100, 150, 1);    
+         
         this.mockMvc.perform(post("/widget")
-                .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+    
+    @Test
+    public void createWidget()
+      throws Exception {   
+        this.mockMvc.perform(post("/widget")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"x\":1,\"y\":1,\"width\":100,\"height\":150}")
+                            )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$[0].name").equals(1));
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.x").value(1))
+                .andExpect(jsonPath("$.y").value(1))
+                .andExpect(jsonPath("$.width").value(100))
+                .andExpect(jsonPath("$.height").value(150))
+                .andExpect(jsonPath("$.zindex").value(0))
+                ;
     }
 
 }

@@ -57,22 +57,7 @@ public class WidgetManager {
         }
         return new ArrayList<Widget>(this.widgetList.values());
     }
-    
-    public Widget createWidget(int x, int y, int width, int height) {
-        int zindex = 0;
-        if (!this.widgetList.isEmpty()) 
-            zindex = this.widgetList.lastEntry().getValue().getZIndex() + 1;
-        Widget result = new WidgetBuilder()
-                .withX(x)
-                .withY(y)
-                .withWidth(width)
-                .withHeight(height)
-                .withZIndex(zindex)
-                .build();
-        this.widgetList.put(zindex, result);
-        return result;
-    }
-    
+      
     private void moveZIndex(int zindex) {
         if (this.widgetList.get(zindex) != null) {
             //then we have to change the object and see if there is a cascade of changes to do
@@ -81,29 +66,16 @@ public class WidgetManager {
             this.moveZIndex(zindex + 1);
             this.widgetList.put(zindex + 1, changedwidget);
         }
-    }
-    
-    public Widget createWidget(int x, int y, int width, int height, int zindex) {
-        Widget result = new WidgetBuilder()
-                .withX(x)
-                .withY(y)
-                .withWidth(width)
-                .withHeight(height)
-                .withZIndex(zindex)
-                .build();
-        this.moveZIndex(zindex);
-        this.widgetList.put(zindex, result);
-        return result;
-    }
-    
+    }    
    
     public Widget createWidget(Map<String, Integer> args) {
         if(!args.containsKey("x") || !args.containsKey("y") || !args.containsKey("width") || !args.containsKey("height"))
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Missing widget parameters");
+                    HttpStatus.BAD_REQUEST, "Missing widget parameters");
         int zindex = 0;
         if(!args.containsKey("zindex")) {
-            zindex = this.widgetList.lastEntry().getValue().getZIndex() + 1;
+            if (!this.widgetList.isEmpty())
+                zindex = this.widgetList.lastEntry().getValue().getZIndex() + 1;
         }
         else{
             zindex = args.get("zindex");

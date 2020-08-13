@@ -45,46 +45,16 @@ public class APIController {
          return result; 
      }
 	 
-	 /*@PostMapping(path="/widget")
-     public Widget createWidget(@RequestParam(value = "x") int x, 
-             @RequestParam(value = "y") int y, 
-             @RequestParam(value = "width") int width, 
-             @RequestParam(value = "height") int height , 
-             @RequestParam(value = "zindex") Optional<Integer> zindex) {
-	     if(zindex.isPresent()) {
-	         Widget result = widgetmanager.createWidget(x, y, width, height, zindex.get());
-	         return result;
-	     }
-	     else {
-	         Widget result = widgetmanager.createWidget(x, y, width, height);
-	         return result;
-	     }
-     }*/
-	 
 	 @PostMapping(path="/widget" )
 	 public Widget createWidget(@RequestBody HashMap<String, Integer> args) {
           Widget result = widgetmanager.createWidget(args);
           return result;
      }
 	 
+	 
 	 @PutMapping(path="/widget/{id}")
      public Widget updateWidget(@PathVariable String id,
-             @RequestParam(value = "x") Optional<Integer> x, 
-             @RequestParam(value = "y") Optional<Integer> y, 
-             @RequestParam(value = "width") Optional<Integer> width, 
-             @RequestParam(value = "height") Optional<Integer> height , 
-             @RequestParam(value = "zindex") Optional<Integer> zindex) {
-	     HashMap<String, Integer> args = new HashMap<String, Integer>();
-	     if(x.isPresent())
-	         args.put("x", x.get());
-	     if(y.isPresent())
-             args.put("y", y.get());
-	     if(width.isPresent())
-             args.put("width", width.get());
-	     if(height.isPresent())
-             args.put("height", height.get());
-	     if(zindex.isPresent())
-             args.put("zindex", zindex.get());
+             @RequestBody HashMap<String, Integer> args) {
          Widget result = widgetmanager.changeWidget(id, args);
          return result;
      }

@@ -1,7 +1,7 @@
 package com.widget.apitest;
 
 
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -26,14 +26,14 @@ public class WidgetManager {
      * Therefore I think TreeMap could be the best option (hashmap: n op. at O(1) + 1+ op at nlogn, treemap: n op. at logn + 1+ op at n)
      * We could also do a mix of the 2: insert and remove would be logn, search would be O(1), modifyng would be 2*log(n) and full output of widgets logn The question therefore would be memory usage.
      * 
-     * Please note that if we multithread this program, TreeMap and HashMap are not thread safe. Therefore we should select ConcurrentSkipListMap or HashTable.
+     * Please note that if we multithread this program, TreeMap and HashMap are not thread safe. Therefore we should select ConcurrentSkipListMap or ConcurrentHashMap. We will use the latter
      */
     
     public WidgetManager() {
-        this.widgetList = new TreeMap<Integer, Widget>();
+        this.widgetList = new ConcurrentSkipListMap<Integer, Widget>();
     }
     
-    private TreeMap<Integer, Widget> widgetList;
+    private ConcurrentSkipListMap<Integer, Widget> widgetList;
     
    
     public Widget getWidgetbyID(String id) {

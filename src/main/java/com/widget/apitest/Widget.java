@@ -1,5 +1,6 @@
 package com.widget.apitest;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.UUID;
 import java.time.Instant;
@@ -112,5 +113,19 @@ public class Widget {
     public ZonedDateTime getLastModified() {
         return ZonedDateTime.ofInstant(this.lastModified,  ZoneId.of("Europe/Amsterdam"));
     }
+    
+    //sort by name
+    public static Comparator<Widget> sortByZIndex = new Comparator<Widget>() {
+        @Override
+        public int compare(Widget wgt1, Widget wgt2) {       
+            //sort in ascending order
+            if(wgt1.zindex < wgt2.zindex)
+                return -1;
+            else if (wgt1.zindex > wgt2.zindex)
+                return 1;
+            else 
+                return 0;
+        }
+    }; 
 
 }

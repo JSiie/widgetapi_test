@@ -40,7 +40,17 @@ public class APIController {
      }
 	 
 	 @GetMapping(path="/widget")
-     public List<Widget> getWidgetAll(@RequestParam Optional<Integer> limit,  @RequestParam Optional<Integer> offset) {
+     public List<Widget> getWidgetAll(@RequestParam Optional<Integer> limit,  
+                                     @RequestParam Optional<Integer> offset,
+                                     @RequestParam Optional<Integer> search_xstart,
+                                     @RequestParam Optional<Integer> search_xend,
+                                     @RequestParam Optional<Integer> search_ystart,
+                                     @RequestParam Optional<Integer> search_yend
+                                     ) {
+	     if(search_xstart.isPresent() && search_xend.isPresent() && search_ystart.isPresent() && search_yend.isPresent()) {
+	         List<Widget> result = widgetmanager.getWidgetLocated(search_xstart.get(), search_xend.get(), search_ystart.get(), search_yend.get());
+	         return result; 
+	     }
 	     int realLimit = 10;
 	     if(limit.isPresent() && limit.get() <= 500 && limit.get() > 0)
 	         realLimit = limit.get();

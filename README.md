@@ -26,7 +26,7 @@ either I create a Treemap ordered by X coordinate, with a list of widget as a va
 I opted for the second option (but with real data and analytics I may have not choosed this one) into WidgetLocationList class.
 
 optionnal 3: TODO if I can until end of week
-- technical ideas: use a bucket to manage the rates (1 bucket by endpoint). Make an endpoint to manage these rates ? (but need an authentication mechanism for this kind of endpoint)
+- technical ideas: either use a library (like bucket4j) or create my own token-bucket system to manage the rates (but can be a lot of work to do). Make an endpoint to manage these rates ? (but need an authentication mechanism for this kind of endpoint)
 
 optionnal 4: TODO if I can until end of week
 - technical ideas: I guess I will transform WidgetManager as an interface, and implement memory storage vs sql storage in 2 different files. Then at start I will read a config file and choose which one to use.

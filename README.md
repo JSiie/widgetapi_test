@@ -1,7 +1,7 @@
 This is an assignment: create a widget API
 
 Base part: IMPLEMENTED
-- important: I couldn't download jdk from oracle (page down) and as I am on a new computer I don't have older rpms. I compiled it with openjdk11. IF I find a rpm I will change the jdk used, otherwise it would'nt change a lot the behavior.
+- important: I couldn't download jdk from oracle (page down) and as I am on a new computer I don't have older rpms. I built it with openjdk11. IF I find a rpm I will change the jdk used, otherwise it would'nt change a lot the behavior.
 - api calls: 
 	http://localhost:8080 -> basic http page
 	http://localhost:8080/widget -> GET gives all widgets. POST allow to create a widget through data in the body on application/json format { "x":X, "y":Y, "width":W, "height":H [,"zindex": Z] } 
